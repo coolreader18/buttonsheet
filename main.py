@@ -25,6 +25,3 @@ def make():
 
 def rfc5987(s):
     return "UTF-8''" + urllib.parse.quote(s, encoding="utf-8")
-
-
-app.run(host='0.0.0.0', port=8080)
