@@ -5,13 +5,7 @@ import urllib.parse
 
 app = Flask("sheetmaker")
 
-
-@app.route("/")
-def main():
-    return app.send_static_file("index.html")
-
-
-@app.route("/make", methods=["POST"])
+@app.route("/", methods=["POST"])
 def make():
     f = request.files['image']
     im = Image.open(f)
