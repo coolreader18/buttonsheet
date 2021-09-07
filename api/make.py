@@ -5,8 +5,8 @@ import urllib.parse
 
 app = Flask("sheetmaker")
 
-@app.route("/", methods=["POST"])
-def make():
+@app.route("/<path:path>", methods=["POST"])
+def make(path):
     f = request.files['image']
     im = Image.open(f)
     pdf = buttonsheet.make(im)
