@@ -31,6 +31,12 @@
 
         <template id="app-root">
             <form id="form" action="/api/make" method="post" enctype="multipart/form-data">
+                <h2>Button sheet generator</h2>
+                <p>
+                    The rows are layers, the different images in each row are "alts" - they'll be
+                    tiled on the output sheet, so if you have 2 layers made of alts X, Y, Z and A, B
+                    the output will be XA, YB, ZA, XB, etc.
+                </p>
                 <p>
                     Name of button sheet:
                     <input type="text" name="button-name" value="button sheet" />
