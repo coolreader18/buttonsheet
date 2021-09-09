@@ -1,8 +1,9 @@
 {
   "version": 2,
   "functions": {
-    "api/make.py": {
-      "runtime": "coolreader18/vercel#hack@1.0.0"
+    "api/make/index.py": {
+      "runtime": "coolreader18/vercel#hack@1.0.0",
+      "includeFiles": "api/make/"
     }
   }
 }
