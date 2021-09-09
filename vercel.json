@@ -2,7 +2,7 @@
   "version": 2,
   "functions": {
     "api/make/index.py": {
-      "runtime": "coolreader18/vercel#hack@1.0.0",
+      "runtime": "@vercel/python@2.0.6-canary.2",
       "includeFiles": "api/make/"
     }
   }

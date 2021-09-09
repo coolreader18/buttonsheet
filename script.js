@@ -21,7 +21,7 @@ const define = (id, cls) => {
 };
 
 define(
-    "pin-layer",
+    "button-layer",
     class extends LightDOMElement {
         init() {
             /** @type {HTMLInputElement} */
@@ -33,7 +33,10 @@ define(
             this.kind_input = this.querySelector(".layer-kind-input");
 
             this.file_input.addEventListener("change", () => {
-                this.img.src = URL.createObjectURL(this.file_input.files[0]);
+                this.img.classList.remove("upload-icon");
+                this.img.style.backgroundImage = `url(${URL.createObjectURL(
+                    this.file_input.files[0]
+                )})`;
             });
             this.remove_btn.addEventListener("click", () => {
                 this.remove();
@@ -53,8 +56,8 @@ define(
     "layers-row",
     class extends LightDOMElement {
         init() {
-            this.querySelector(".add-layer").addEventListener("click", (e) => {
-                e.currentTarget.before(document.createElement("pin-layer"));
+            this.querySelector(".add-alt").addEventListener("click", (e) => {
+                e.currentTarget.before(document.createElement("button-layer"));
             });
         }
     }
@@ -64,7 +67,7 @@ define(
     "app-root",
     class extends LightDOMElement {
         init() {
-            this.querySelector(".add-row").addEventListener("click", (e) => {
+            this.querySelector(".add-layer").addEventListener("click", (e) => {
                 e.preventDefault();
                 e.currentTarget.parentElement.before(document.createElement("layers-row"));
             });

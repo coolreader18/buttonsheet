@@ -9,6 +9,10 @@ inner_button = 1.25
 outer_button = 1.625
 page_width = 8.5
 page_height = 11
+ncols = 4
+nrows = 5
+margin = 0.25
+gap = (page_width - (margin * 2 + outer_button * ncols)) / (ncols - 1)
 
 outer_radius = (outer_button / 2) - (inner_button / 2)
 
@@ -30,16 +34,13 @@ def calc_dims(x, y):
     return inner_dims, outer_dims
 
 
-poss = lambda n: make_poss(n, outer_button, 0.5, 0.25)
+poss = lambda n: make_poss(n, outer_button, gap, margin)
 
 button_positions = [(x, y, *calc_dims(x, y)) for x in poss(4) for y in poss(5)]
 
 
 def draw_circle(ps, center, r):
     ps.fp.write(b"%d %d %d 0 360 arc closepath stroke\n" % (*center, r))
-
-
-avg = lambda *xs: sum(xs) / len(xs)
 
 
 # layers[rows[]]

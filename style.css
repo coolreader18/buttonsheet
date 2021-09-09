@@ -31,18 +31,19 @@ layers-row {
     margin: 20px 0;
 }
 
-pin-layer,
-.add-layer {
+button-layer,
+.add-alt {
     border-radius: 10px;
     border: 1px black solid;
 }
 
-.add-layer {
-    min-height: calc(1.25in + 20px);
-    min-width: calc(1.25in + 20px);
+.add-alt {
+    --size: calc(1.25in + 20px + 0.1px);
+    min-height: var(--size);
+    min-width: var(--size);
 }
 
-pin-layer {
+button-layer {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -53,6 +54,15 @@ pin-layer {
     --layer-size: 1.25in;
     width: var(--layer-size);
     height: var(--layer-size);
+    border-radius: 50%;
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 0.1px solid gray;
+    background-image: url(/assets/upload.svg);
+}
+.layer-img.upload-icon {
+    background-size: 50% 50%;
 }
 .layer-img-full {
     --layer-size: 1.625in;

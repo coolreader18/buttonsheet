@@ -8,10 +8,10 @@
     </head>
 
     <body>
-        <template id="pin-layer">
+        <template id="button-layer">
             <label class="d-contents">
                 <input type="file" name="layer-image" class="layer-input hidden" />
-                <img class="layer-img" role="button" />
+                <div class="layer-img upload-icon" role="button"></div>
             </label>
             <div class="layer-config h100">
                 <div class="h100 remove-layer text-button" role="button">X</div>
@@ -24,15 +24,19 @@
         </template>
 
         <template id="layers-row">
-            <pin-layer></pin-layer>
-            <div class="add-layer text-button">+</div>
+            <button-layer></button-layer>
+            <div class="add-alt text-button">+</div>
             <input class="hidden" name="marker" value="endrow" />
         </template>
 
         <template id="app-root">
             <form id="form" action="/api/make" method="post" enctype="multipart/form-data">
+                <p>
+                    Name of button sheet:
+                    <input type="text" name="button-name" value="button sheet" />
+                </p>
                 <layers-row></layers-row>
-                <p><button class="add-row">Add Row</button></p>
+                <p><button class="add-layer">Add Layer</button></p>
                 <p><input type="submit" value="Submit" /></p>
             </form>
         </template>
