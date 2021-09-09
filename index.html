@@ -1,17 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="style.css" />
+        <title>Button sheet generator</title>
+    </head>
 
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Button sheet generator</title>
-</head>
+    <body>
+        <template id="pin-layer">
+            <label class="d-contents">
+                <input type="file" name="layer-image" class="layer-input hidden" />
+                <img class="layer-img" role="button" />
+            </label>
+            <div class="layer-config h100">
+                <div class="h100 remove-layer text-button" role="button">X</div>
+                <div class="h100 layer-kind text-button" role="checkbox" aria-checked="false">
+                    ○
+                </div>
+                <input class="layer-kind-input hidden" name="layer-full" value="" />
+            </div>
+            <input class="hidden" name="marker" value="endlayer" />
+        </template>
 
-<body>
-	<form action="/api/make" method="post" enctype="multipart/form-data">
-		<label for="image">Upload a square image file: </label>
-        <input type="file" name="image"><br>
-        <input type="submit" value="Submit">
-</form>
-</body>
+        <template id="layers-row">
+            <pin-layer></pin-layer>
+            <div class="add-layer text-button">+</div>
+            <input class="hidden" name="marker" value="endrow" />
+        </template>
+
+        <template id="app-root">
+            <form id="form" action="/api/make" method="post" enctype="multipart/form-data">
+                <layers-row></layers-row>
+                <p><button class="add-row">Add Row</button></p>
+                <p><input type="submit" value="Submit" /></p>
+            </form>
+        </template>
+
+        <script src="script.js"></script>
+        <app-root></app-root>
+    </body>
 </html>

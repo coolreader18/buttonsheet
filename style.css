@@ -1,0 +1,94 @@
+#form {
+    margin: 0 auto;
+    border-radius: 10px;
+    border: 1px black solid;
+    padding: 25px;
+}
+
+@media (max-width: 500px) {
+    #form {
+        width: 80vw;
+    }
+}
+@media (min-width: 500px) and (max-width: 1200px) {
+    #form {
+        width: 75vw;
+    }
+}
+@media (min-width: 1200px) {
+    #form {
+        width: 60vw;
+    }
+}
+
+layers-row {
+    display: flex;
+    border-radius: 5px;
+    border: 1px black solid;
+    padding: 15px;
+    gap: 10px;
+    overflow-x: scroll;
+    margin: 20px 0;
+}
+
+pin-layer,
+.add-layer {
+    border-radius: 10px;
+    border: 1px black solid;
+}
+
+.add-layer {
+    min-height: calc(1.25in + 20px);
+    min-width: calc(1.25in + 20px);
+}
+
+pin-layer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    padding: 10px;
+}
+.layer-img {
+    --layer-size: 1.25in;
+    width: var(--layer-size);
+    height: var(--layer-size);
+}
+.layer-img-full {
+    --layer-size: 1.625in;
+}
+.layer-config {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    height: 100%;
+    width: 20px;
+}
+.layer-config > div {
+    background-color: lightgray;
+    flex: auto;
+    width: 100%;
+    border: 0.5px solid black;
+}
+
+.hidden {
+    display: none;
+}
+.hidden-input {
+    appearance: none;
+}
+.d-contents {
+    display: contents;
+}
+.h100 {
+    height: 100%;
+}
+.w100 {
+    width: 100%;
+}
+.text-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+}
