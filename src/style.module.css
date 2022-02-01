@@ -1,4 +1,4 @@
-#form {
+.form {
     margin: 0 auto;
     border-radius: 10px;
     border: 1px black solid;
@@ -6,22 +6,22 @@
 }
 
 @media (max-width: 500px) {
-    #form {
+    .form {
         width: 80vw;
     }
 }
 @media (min-width: 500px) and (max-width: 1200px) {
-    #form {
+    .form {
         width: 75vw;
     }
 }
 @media (min-width: 1200px) {
-    #form {
+    .form {
         width: 60vw;
     }
 }
 
-layers-row {
+.layers-row {
     display: flex;
     border-radius: 5px;
     border: 1px black solid;
@@ -31,7 +31,7 @@ layers-row {
     margin: 20px 0;
 }
 
-button-layer,
+.button-layer,
 .add-alt {
     border-radius: 10px;
     border: 1px black solid;
@@ -43,7 +43,7 @@ button-layer,
     min-width: var(--size);
 }
 
-button-layer {
+.button-layer {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -59,13 +59,13 @@ button-layer {
     background-position: center;
     background-repeat: no-repeat;
     border: 0.1px solid gray;
-    background-image: url(assets/upload.svg);
+    background-image: url(/assets/upload.svg);
 }
 .layer-img.upload-icon {
     background-size: 50% 50%;
 }
-.layer-img-full {
-    --layer-size: 1.625in;
+.layer-img.layer-img-full {
+    --layer-size: 1.625in !important;
 }
 .layer-config {
     display: flex;
