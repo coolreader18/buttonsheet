@@ -82,11 +82,17 @@ define(
                 e.preventDefault();
                 e.currentTarget.parentElement.before(document.createElement("layers-row"));
             });
-            this.querySelector("#submit").addEventListener("click", async (e) => {
+            this.querySelector("#submit").addEventListener("click", async () => {
                 const win = window.open();
                 win.document.write(`<h1 style="text-align:center;">Please wait...</h1>`);
-                const pdf = await genPdf(this.layers());
-                win.location = pdf.output("bloburi");
+                try {
+                    const pdf = await genPdf(this.layers());
+                    win.location = pdf.output("bloburi");
+                } catch (err) {
+                    win.close();
+                    // TODO: error message in the document
+                    alert("Error while generating pdf: " + err);
+                }
             });
         }
         layers() {
