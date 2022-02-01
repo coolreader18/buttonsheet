@@ -83,8 +83,9 @@ define(
                 e.currentTarget.parentElement.before(document.createElement("layers-row"));
             });
             this.querySelector("#submit").addEventListener("click", async (e) => {
+                const win = window.open();
                 const pdf = await genPdf(this.layers());
-                window.open(pdf.output("bloburi"));
+                win.location = pdf.output("bloburi");
             });
         }
         layers() {
