@@ -1,9 +1,0 @@
-{
-  "version": 2,
-  "functions": {
-    "api/make/index.py": {
-      "runtime": "@vercel/python@2.0.6-canary.2",
-      "includeFiles": "api/make/"
-    }
-  }
-}

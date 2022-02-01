@@ -59,7 +59,7 @@ button-layer {
     background-position: center;
     background-repeat: no-repeat;
     border: 0.1px solid gray;
-    background-image: url(/assets/upload.svg);
+    background-image: url(assets/upload.svg);
 }
 .layer-img.upload-icon {
     background-size: 50% 50%;

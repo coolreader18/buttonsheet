@@ -30,7 +30,7 @@
         </template>
 
         <template id="app-root">
-            <form id="form" action="/api/make" method="post" enctype="multipart/form-data">
+            <div id="form">
                 <h2>Button sheet generator</h2>
                 <p>
                     The rows are layers, the different images in each row are "alts" - they'll be
@@ -43,11 +43,11 @@
                 </p>
                 <layers-row></layers-row>
                 <p><button class="add-layer">Add Layer</button></p>
-                <p><input type="submit" value="Create" /></p>
+                <p><button id="submit">Create</button></p>
             </form>
         </template>
 
-        <script src="script.js"></script>
+        <script src="script.js" type="module"></script>
         <app-root></app-root>
     </body>
 </html>

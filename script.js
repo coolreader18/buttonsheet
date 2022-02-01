@@ -1,3 +1,5 @@
+import { genPdf } from "./genpdf.js";
+
 // TODO: shadow dom + form-associated custom elements once stabilized
 class LightDOMElement extends HTMLElement {
     /** @type {HTMLTemplateElement} */
@@ -49,6 +51,12 @@ define(
                 this.img.classList.toggle("layer-img-full", full_layer);
             });
         }
+        getData() {
+            return {
+                blob: this.file_input.files[0],
+                full: this.full,
+            };
+        }
     }
 );
 
@@ -59,6 +67,9 @@ define(
             this.querySelector(".add-alt").addEventListener("click", (e) => {
                 e.currentTarget.before(document.createElement("button-layer"));
             });
+        }
+        alts() {
+            return [...this.querySelectorAll("button-layer")].map((alt) => alt.getData());
         }
     }
 );
@@ -71,6 +82,13 @@ define(
                 e.preventDefault();
                 e.currentTarget.parentElement.before(document.createElement("layers-row"));
             });
+            this.querySelector("#submit").addEventListener("click", async (e) => {
+                const pdf = await genPdf(this.layers());
+                window.open(pdf.output("bloburi"));
+            });
+        }
+        layers() {
+            return [...this.querySelectorAll("layers-row")].map((layer) => layer.alts());
         }
     }
 );
