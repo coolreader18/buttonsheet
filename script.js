@@ -84,6 +84,7 @@ define(
             });
             this.querySelector("#submit").addEventListener("click", async (e) => {
                 const win = window.open();
+                win.document.write(`<h1 style="text-align:center;">Please wait...</h1>`);
                 const pdf = await genPdf(this.layers());
                 win.location = pdf.output("bloburi");
             });
