@@ -47,8 +47,8 @@ export const genPdf = async (layers) => {
                     canv.height = height;
                     const ctx = canv.getContext("2d");
 
-                    ctx.fillStyle = "#ffffff";
-                    ctx.fillRect(0, 0, width, height);
+                    // ctx.fillStyle = "#ffffff";
+                    // ctx.fillRect(0, 0, width, height);
                     const hw = width / 2;
                     const hh = height / 2;
                     ctx.ellipse(hw, hh, hw, hh, 0, 0, Math.PI * 2);
@@ -61,14 +61,14 @@ export const genPdf = async (layers) => {
             )
         )
     );
-    const doc = new jsPDF({ unit: "in", format: "letter" });
+    const doc = new jsPDF({ unit: "in", format: "letter", compress: true, putOnlyUsedFonts: true });
     let l = 0;
     for (const layer of lays) {
         let i = 0;
         for (const [_x, _y, inner_dims, outer_dims] of button_positions) {
             const alt = layer[i];
             const dims = alt.full ? outer_dims : inner_dims;
-            doc.addImage(alt.canv, ...dims, `l${l}a${i}`);
+            doc.addImage(alt.canv, "PNG", ...dims, `l${l}a${i}`);
             i = (i + 1) % layer.length;
         }
         l += 1;
