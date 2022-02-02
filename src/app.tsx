@@ -1,6 +1,6 @@
 import * as React from "react";
 import { FC, useState } from "react";
-import { Alt, genPdf } from "./genpdf";
+import type { Alt } from "./genpdf";
 import cx from "classnames";
 import iterate from "iterare";
 import produce, { enableMapSet } from "immer";
@@ -15,7 +15,10 @@ type Layer = Map<Key, Alt>;
 const makeAlt = (): Alt => ({ blob: new Blob(), full: false });
 const newLayer = (): Layer => new Map([[key(), makeAlt()]]);
 
+const genpdfProm = import("./genpdf");
+
 const create = async (layers: Map<Key, Layer>) => {
+    const { genPdf } = await genpdfProm;
     const win = window.open()!;
     win.document.write(`<h1 style="text-align:center;">Please wait...</h1>`);
     try {
