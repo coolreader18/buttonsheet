@@ -1,6 +1,11 @@
 {
   "name": "buttonsheet",
   "source": "src/index.html",
+  "targets": {
+    "default": {
+      "publicUrl": "."
+    }
+  },
   "scripts": {
     "dev": "parcel serve",
     "dist": "parcel build"
