@@ -15,10 +15,15 @@ type Layer = Map<Key, Alt>;
 const makeAlt = (): Alt => ({ blob: new Blob(), full: false });
 const newLayer = (): Layer => new Map([[key(), makeAlt()]]);
 
-const genpdfProm = import("./genpdf");
+let _genPdf!: Promise<typeof import("./genpdf").genPdf>;
+document.addEventListener("readystatechange", () => {
+    if (document.readyState === "complete") {
+        _genPdf ||= import("./genpdf").then((mod) => mod.genPdf);
+    }
+});
+const genPdf: typeof import("./genpdf").genPdf = async (...args) => (await _genPdf)(...args);
 
 const create = async (layers: Map<Key, Layer>) => {
-    const { genPdf } = await genpdfProm;
     const win = window.open()!;
     win.document.write(`<h1 style="text-align:center;">Please wait...</h1>`);
     try {
