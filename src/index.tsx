@@ -1,10 +1,4 @@
-import * as React from "react";
-import { render } from "react-dom";
+import { render, h } from "preact";
 import { App } from "./app";
 
-render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>,
-    document.getElementById("app")
-);
+render(<App />, document.getElementById("app")!);

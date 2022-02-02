@@ -1,5 +1,5 @@
-import * as React from "react";
-import { FC, useState } from "react";
+import { FunctionComponent as FC, h } from "preact";
+import { useState } from "preact/hooks";
 import type { Alt } from "./genpdf";
 import cx from "classnames";
 import iterate from "iterare";
@@ -105,8 +105,8 @@ const ButtonLayer: FC<{
                 <input
                     type="file"
                     className={styles.hidden}
-                    onChange={(e) => {
-                        const file = e.target.files![0];
+                    onInput={(e) => {
+                        const file = (e.target! as HTMLInputElement).files![0];
                         setBackgroundImage(`url(${URL.createObjectURL(file)})`);
                         update((alt) => ({ ...alt, blob: file }));
                     }}
@@ -133,7 +133,9 @@ const ButtonLayer: FC<{
                     type="checkbox"
                     // className={styles.hidden}
                     checked={full}
-                    onChange={(e) => update((alt) => ({ ...alt, full: e.target.checked }))}
+                    onChange={(e) =>
+                        update((alt) => ({ ...alt, full: (e.target! as HTMLInputElement).checked }))
+                    }
                     style={{ appearance: "none" }}
                     // @ts-ignore
                     checkedMark="◎"
