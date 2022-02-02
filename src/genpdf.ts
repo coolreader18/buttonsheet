@@ -43,20 +43,19 @@ export const genPdf = async (layers: Iterable<Iterable<Alt>>) => {
         iterate(layers).map((layer) =>
             Promise.all(
                 iterate(layer).map(async ({ blob, ...alt }) => {
-                    const img = await loadImage(blob);
-                    const { width, height } = img;
+                    const DPI = 300;
+                    const size = (alt.full ? inner_button : outer_button) * DPI;
+                    const img = await createImageBitmap(blob);
                     const canv = document.createElement("canvas");
-                    canv.width = width;
-                    canv.height = height;
+                    canv.width = size;
+                    canv.height = size;
                     const ctx = canv.getContext("2d")!;
 
-                    const hw = width / 2;
-                    const hh = height / 2;
-                    ctx.ellipse(hw, hh, hw, hh, 0, 0, Math.PI * 2);
+                    const r = size / 2;
+                    ctx.ellipse(r, r, r, r, 0, 0, Math.PI * 2);
                     ctx.clip();
 
-                    ctx.drawImage(img, 0, 0);
-                    URL.revokeObjectURL(img.src);
+                    ctx.drawImage(img, 0, 0, size, size);
 
                     return { canv, ...alt };
                 })
@@ -84,11 +83,3 @@ export const genPdf = async (layers: Iterable<Iterable<Alt>>) => {
 
     return doc;
 };
-
-const loadImage = (blob: Blob): Promise<HTMLImageElement> =>
-    new Promise((res, rej) => {
-        const img = new Image();
-        img.addEventListener("load", () => res(img));
-        img.addEventListener("error", (ev) => rej(ev.error));
-        img.src = URL.createObjectURL(blob);
-    });
