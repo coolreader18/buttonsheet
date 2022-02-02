@@ -1,6 +1,10 @@
 {
   "name": "buttonsheet",
   "source": "src/index.html",
+  "scripts": {
+    "dev": "parcel serve",
+    "dist": "parcel build"
+  },
   "dependencies": {
     "classnames": "^2.3.1",
     "immer": "^9.0.12",
