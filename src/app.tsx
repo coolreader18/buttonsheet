@@ -58,10 +58,17 @@ export const App: FC = () => {
                                 })
                             );
                         }}
-                        add={() => {
+                        addAlt={() => {
                             setLayers((layers) =>
                                 produce(layers, (draft) => {
                                     draft.get(i)!.set(key(), makeAlt());
+                                })
+                            );
+                        }}
+                        removeLayer={() => {
+                            setLayers((layers) =>
+                                produce(layers, (draft) => {
+                                    draft.delete(i);
                                 })
                             );
                         }}
@@ -94,7 +101,6 @@ const ButtonLayer: FC<{
             <label className={styles.dContents}>
                 <input
                     type="file"
-                    name="layer-image"
                     className={styles.hidden}
                     onChange={(e) => {
                         const file = e.target.files![0];
@@ -113,21 +119,23 @@ const ButtonLayer: FC<{
                 ></div>
             </label>
             <div className={cx(styles.layerConfig, styles.h100)}>
-                <div
+                <button
                     className={cx(styles.h100, styles.textButton)}
-                    role="button"
                     onClick={() => update(() => null)}
                 >
-                    X
-                </div>
-                <div
-                    className={cx(styles.h100, styles.textButton)}
-                    role="checkbox"
-                    aria-checked={full}
-                    onClick={() => update((alt) => ({ ...alt, full: !alt.full }))}
-                >
-                    {full ? "◎" : "○"}
-                </div>
+                    🗙
+                </button>
+                <input
+                    className={cx(styles.h100, styles.textButton, styles.checkbox)}
+                    type="checkbox"
+                    // className={styles.hidden}
+                    checked={full}
+                    onChange={(e) => update((alt) => ({ ...alt, full: e.target.checked }))}
+                    style={{ appearance: "none" }}
+                    // @ts-ignore
+                    checkedMark="◎"
+                    uncheckedMark="○"
+                />
             </div>
         </div>
     );
@@ -136,16 +144,24 @@ const ButtonLayer: FC<{
 const LayersRow: FC<{
     alts: Map<Key, Alt>;
     update: (k: Key, alt: (alt: Alt) => Alt | null) => void;
-    add: () => void;
-}> = ({ alts, update, add }) => (
+    addAlt: () => void;
+    removeLayer: () => void;
+}> = ({ alts, update, addAlt, removeLayer }) => (
     <div className={styles.layersRow}>
+        <button className={cx(styles.textButton, styles.removeLayer)} onClick={removeLayer}>
+            🗙
+        </button>
         {iterate(alts)
             .map(([i, alt]) => (
                 <ButtonLayer key={i} update={(alt) => update(i, alt)} full={alt.full} />
             ))
             .toArray()}
-        <div className={cx(styles.addAlt, styles.textButton)} onClick={add}>
-            +
+        <div
+            className={cx(styles.addAlt, styles.textButton)}
+            onClick={addAlt}
+            style={{ fontSize: "1.5em" }}
+        >
+            ＋
         </div>
     </div>
 );

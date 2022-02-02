@@ -4,6 +4,7 @@
         "downlevelIteration": true,
         "jsx": "react",
         "module": "es2020",
+        "target": "ESNext",
         "moduleResolution": "node"
     }
 }

@@ -31,6 +31,17 @@
     margin: 20px 0;
 }
 
+.remove-layer {
+    position: absolute;
+    transform: translateY(-28px) translateX(-28px);
+    background-color: white;
+    border-radius: 50%;
+    width: 1.5em;
+    height: 1.5em;
+    font-size: 1em;
+    border: 1px black solid;
+}
+
 .button-layer,
 .add-alt {
     border-radius: 10px;
@@ -65,7 +76,7 @@
     background-size: 50% 50%;
 }
 .layer-img.layer-img-full {
-    --layer-size: 1.625in !important;
+    --layer-size: 1.625in;
 }
 .layer-config {
     display: flex;
@@ -74,18 +85,24 @@
     height: 100%;
     width: 20px;
 }
-.layer-config > div {
+.layer-config > .text-button {
     background-color: lightgray;
+    width: 22px;
     flex: auto;
-    width: 100%;
+    margin: 0;
     border: 0.5px solid black;
+    font-size: 1em;
+}
+.checkbox::after {
+    line-height: 2;
+    content: attr(uncheckedMark);
+}
+.checkbox:checked::after {
+    content: attr(checkedMark);
 }
 
 .hidden {
     display: none;
-}
-.hidden-input {
-    appearance: none;
 }
 .d-contents {
     display: contents;
