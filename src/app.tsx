@@ -111,21 +111,22 @@ const ButtonLayer: FC<{
                 <input
                     type="file"
                     className={styles.hidden}
-                    onInput={(e) => {
-                        const file = (e.target! as HTMLInputElement).files![0];
+                    onChange={(e) => {
+                        const file = e.currentTarget.files![0];
                         setBackgroundImage(`url(${URL.createObjectURL(file)})`);
                         update((alt) => ({ ...alt, blob: file }));
                     }}
                 />
-                <div
-                    role="button"
+                <button
+                    // forward button to file input
+                    onClick={(e) => e.currentTarget.parentElement!.click()}
                     className={cx(
                         styles.layerImg,
                         backgroundImage ? null : styles.uploadIcon,
                         full && styles.layerImgFull
                     )}
                     style={{ backgroundImage }}
-                ></div>
+                />
             </label>
             <div className={cx(styles.layerConfig, styles.h100)}>
                 <button
@@ -137,11 +138,8 @@ const ButtonLayer: FC<{
                 <input
                     className={cx(styles.h100, styles.textButton, styles.checkbox)}
                     type="checkbox"
-                    // className={styles.hidden}
                     checked={full}
-                    onChange={(e) =>
-                        update((alt) => ({ ...alt, full: (e.target! as HTMLInputElement).checked }))
-                    }
+                    onChange={(e) => update((alt) => ({ ...alt, full: e.currentTarget.checked }))}
                     style={{ appearance: "none" }}
                     // @ts-ignore
                     checkedMark="◎"
@@ -167,12 +165,13 @@ const LayersRow: FC<{
                 <ButtonLayer key={i} update={(alt) => update(i, alt)} full={alt.full} />
             ))
             .toArray()}
-        <div
+        <button
+            tabIndex={0}
             className={cx(styles.addAlt, styles.textButton)}
             onClick={addAlt}
             style={{ fontSize: "1.5em" }}
         >
             ＋
-        </div>
+        </button>
     </div>
 );
