@@ -4,6 +4,7 @@ import type { Alt } from "./genpdf";
 import cx from "classnames";
 import iterate from "iterare";
 import produce, { enableMapSet } from "immer";
+// @ts-ignore
 import * as styles from "./style.module.css";
 enableMapSet();
 
