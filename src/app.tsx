@@ -135,12 +135,15 @@ const ButtonLayer: FC<{
                         full && styles.layerImgFull
                     )}
                     style={{ backgroundImage }}
+                    aria-label="Upload image"
                 />
             </label>
             <div className={cx(styles.layerConfig, styles.h100)}>
                 <button
                     className={cx(styles.h100, styles.textButton)}
-                    onClick={prevDefault((e) => update(() => null))}
+                    onClick={prevDefault(() => update(() => null))}
+                    aria-label="Delete alt"
+                    title="Delete alt"
                 >
                     🗙
                 </button>
@@ -153,6 +156,8 @@ const ButtonLayer: FC<{
                     // @ts-ignore
                     checkedMark="◎"
                     uncheckedMark="○"
+                    aria-label="Image fills entire button template"
+                    title={full ? "Make image normal width" : "Make image full width"}
                 />
                 <input
                     className={cx(styles.h100, styles.textButton, styles.checkboxPixelart)}
@@ -160,6 +165,8 @@ const ButtonLayer: FC<{
                     checked={pixel}
                     onChange={(e) => update((alt) => ({ ...alt, pixel: e.currentTarget.checked }))}
                     style={{ appearance: "none" }}
+                    aria-label="Image is pixel art"
+                    title={pixel ? "Mark image as non-pixel-art" : "Mark image as pixel art"}
                 />
             </div>
         </div>
@@ -176,6 +183,8 @@ const LayersRow: FC<{
         <button
             className={cx(styles.textButton, styles.removeLayer)}
             onClick={prevDefault(removeLayer)}
+            aria-label="Delete layer"
+            title="Delete layer"
         >
             🗙
         </button>
@@ -187,6 +196,8 @@ const LayersRow: FC<{
             className={cx(styles.addAlt, styles.textButton)}
             onClick={prevDefault(addAlt)}
             style={{ fontSize: "1.5em" }}
+            aria-label="Add alt"
+            title="Add alt"
         >
             ＋
         </button>
