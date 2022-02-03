@@ -101,6 +101,18 @@
 .checkbox:checked::after {
     content: attr(checkedMark);
 }
+.checkbox-pixelart::after {
+    content: "";
+    width: 1em;
+    height: 1em;
+    background-size: contain;
+    background-repeat: no-repeat;
+
+    background-image: url("data-url:/assets/palette.svg");
+}
+.checkbox-pixelart:checked::after {
+    background-image: url("data-url:/assets/invader.svg");
+}
 
 .hidden {
     display: none;

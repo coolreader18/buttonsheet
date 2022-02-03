@@ -1,4 +1,5 @@
 import { FunctionComponent as FC, h } from "preact";
+import { JSXInternal } from "preact/src/jsx";
 import { useState } from "preact/hooks";
 import type { Alt } from "./genpdf";
 import cx from "classnames";
@@ -12,8 +13,15 @@ let _key = 0;
 const key = (): Key => _key++;
 type Key = number;
 
+const prevDefault =
+    <E extends { preventDefault(): void }>(f: (ev: E) => void) =>
+    (ev: E) => {
+        ev.preventDefault();
+        f(ev);
+    };
+
 type Layer = Map<Key, Alt>;
-const makeAlt = (): Alt => ({ blob: new Blob(), full: false });
+const makeAlt = (): Alt => ({ blob: new Blob(), full: false, pixel: false });
 const newLayer = (): Layer => new Map([[key(), makeAlt()]]);
 
 let _genPdf!: Promise<typeof import("./genpdf").genPdf>;
@@ -36,6 +44,7 @@ const create = async (layers: Map<Key, Layer>) => {
         win.location = pdf.output("bloburi").toString();
     } catch (err) {
         win.close();
+        console.error(err);
         // TODO: error message in the document
         alert("Error while generating pdf: " + err);
     }
@@ -45,7 +54,7 @@ export const App: FC = () => {
     const [layers, setLayers] = useState<Map<Key, Layer>>(() => new Map([[key(), newLayer()]]));
 
     return (
-        <div className={styles.form}>
+        <form className={styles.form} onSubmit={prevDefault(() => create(layers))}>
             <h2>Button sheet generator</h2>
             <p>
                 The rows are layers, the different images in each row are "alts" - they'll be tiled
@@ -86,24 +95,24 @@ export const App: FC = () => {
                 .toArray()}
             <p>
                 <button
-                    onClick={() =>
-                        setLayers((prev) => produce(prev, (draft) => draft.set(key(), newLayer())))
-                    }
+                    onClick={prevDefault((e) => {
+                        setLayers((prev) => produce(prev, (draft) => draft.set(key(), newLayer())));
+                    })}
                 >
                     Add Layer
                 </button>
             </p>
             <p>
-                <button onClick={() => create(layers)}>Create</button>
+                <input type="submit" value="Create" />
             </p>
-        </div>
+        </form>
     );
 };
 
 const ButtonLayer: FC<{
     update: (change: (alt: Alt) => Alt | null) => void;
-    full: boolean;
-}> = ({ update, full }) => {
+    alt: Alt;
+}> = ({ update, alt: { full, pixel } }) => {
     const [backgroundImage, setBackgroundImage] = useState<string | undefined>(undefined);
     return (
         <div className={styles.buttonLayer}>
@@ -119,7 +128,7 @@ const ButtonLayer: FC<{
                 />
                 <button
                     // forward button to file input
-                    onClick={(e) => e.currentTarget.parentElement!.click()}
+                    onClick={prevDefault((e) => e.currentTarget.parentElement!.click())}
                     className={cx(
                         styles.layerImg,
                         backgroundImage ? null : styles.uploadIcon,
@@ -131,7 +140,7 @@ const ButtonLayer: FC<{
             <div className={cx(styles.layerConfig, styles.h100)}>
                 <button
                     className={cx(styles.h100, styles.textButton)}
-                    onClick={() => update(() => null)}
+                    onClick={prevDefault((e) => update(() => null))}
                 >
                     🗙
                 </button>
@@ -145,6 +154,13 @@ const ButtonLayer: FC<{
                     checkedMark="◎"
                     uncheckedMark="○"
                 />
+                <input
+                    className={cx(styles.h100, styles.textButton, styles.checkboxPixelart)}
+                    type="checkbox"
+                    checked={pixel}
+                    onChange={(e) => update((alt) => ({ ...alt, pixel: e.currentTarget.checked }))}
+                    style={{ appearance: "none" }}
+                />
             </div>
         </div>
     );
@@ -157,18 +173,19 @@ const LayersRow: FC<{
     removeLayer: () => void;
 }> = ({ alts, update, addAlt, removeLayer }) => (
     <div className={styles.layersRow}>
-        <button className={cx(styles.textButton, styles.removeLayer)} onClick={removeLayer}>
+        <button
+            className={cx(styles.textButton, styles.removeLayer)}
+            onClick={prevDefault(removeLayer)}
+        >
             🗙
         </button>
         {iterate(alts)
-            .map(([i, alt]) => (
-                <ButtonLayer key={i} update={(alt) => update(i, alt)} full={alt.full} />
-            ))
+            .map(([i, alt]) => <ButtonLayer key={i} update={(alt) => update(i, alt)} alt={alt} />)
             .toArray()}
         <button
             tabIndex={0}
             className={cx(styles.addAlt, styles.textButton)}
-            onClick={addAlt}
+            onClick={prevDefault(addAlt)}
             style={{ fontSize: "1.5em" }}
         >
             ＋

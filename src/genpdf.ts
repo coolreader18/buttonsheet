@@ -36,7 +36,7 @@ for (const y of poss(nrows)) {
     }
 }
 
-export type Alt = { blob: Blob; full: boolean };
+export type Alt = { blob: Blob; full: boolean; pixel: boolean };
 
 export const genPdf = async (layers: Iterable<Iterable<Alt>>) => {
     const lays = await Promise.all(
@@ -55,6 +55,7 @@ export const genPdf = async (layers: Iterable<Iterable<Alt>>) => {
                     ctx.ellipse(r, r, r, r, 0, 0, Math.PI * 2);
                     ctx.clip();
 
+                    ctx.imageSmoothingEnabled = !alt.pixel;
                     ctx.drawImage(img, 0, 0, size, size);
 
                     return { canv, ...alt };
