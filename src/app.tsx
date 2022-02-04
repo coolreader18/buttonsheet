@@ -113,7 +113,8 @@ const ButtonLayer: FC<{
     update: (change: (alt: Alt) => Alt | null) => void;
     alt: Alt;
 }> = ({ update, alt: { full, pixel } }) => {
-    const [backgroundImage, setBackgroundImage] = useState<string | undefined>(undefined);
+    const [bgUrl, setBgUrl] = useState<string | undefined>(undefined);
+    const backgroundImage = bgUrl && `url(${bgUrl})`;
     return (
         <div className={styles.buttonLayer}>
             <label className={styles.dContents}>
@@ -122,7 +123,8 @@ const ButtonLayer: FC<{
                     className={styles.hidden}
                     onChange={(e) => {
                         const file = e.currentTarget.files![0];
-                        setBackgroundImage(`url(${URL.createObjectURL(file)})`);
+                        if (bgUrl) URL.revokeObjectURL(bgUrl);
+                        setBgUrl(URL.createObjectURL(file));
                         update((alt) => ({ ...alt, blob: file }));
                     }}
                 />

@@ -45,7 +45,7 @@ export const genPdf = async (layers: Iterable<Iterable<Alt>>) => {
                 iterate(layer).map(async ({ blob, ...alt }) => {
                     const DPI = 300;
                     const size = (alt.full ? inner_button : outer_button) * DPI;
-                    const img = await createImageBitmap(blob);
+                    const img = await loadImage(blob);
                     const canv = document.createElement("canvas");
                     canv.width = size;
                     canv.height = size;
@@ -58,7 +58,7 @@ export const genPdf = async (layers: Iterable<Iterable<Alt>>) => {
                     ctx.imageSmoothingEnabled = !alt.pixel;
                     ctx.drawImage(img, 0, 0, size, size);
 
-                    return { canv, ...alt };
+                    return { canv: canv.toDataURL("image/png"), ...alt };
                 })
             )
         )
@@ -83,4 +83,15 @@ export const genPdf = async (layers: Iterable<Iterable<Alt>>) => {
     }
 
     return doc;
+};
+
+const loadImage = (blob: Blob): Promise<CanvasImageSource> => {
+    const url = URL.createObjectURL(blob);
+    const prom = new Promise<HTMLImageElement>((res, rej) => {
+        const img = new Image();
+        img.addEventListener("load", () => res(img));
+        img.addEventListener("error", (e) => rej(e.error));
+        img.src = url;
+    });
+    return prom.finally(() => URL.revokeObjectURL(url));
 };
