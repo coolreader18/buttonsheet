@@ -21,7 +21,11 @@
   "devDependencies": {
     "@parcel/optimizer-data-url": "^2.2.1",
     "@parcel/transformer-inline-string": "^2.2.1",
-    "parcel": "^2.2.1"
+    "parcel-transformer-svg-react": "link:./transformer-svg-react",
+    "buffer": "^6.0.3",
+    "parcel": "^2.2.1",
+    "postcss": "^8.0.0",
+    "postcss-modules": "^4.3.0"
   },
   "private": true
 }

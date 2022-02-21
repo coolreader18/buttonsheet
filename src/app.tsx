@@ -1,5 +1,4 @@
 import { FunctionComponent as FC, h } from "preact";
-import { JSXInternal } from "preact/src/jsx";
 import { useState } from "preact/hooks";
 import type { Alt } from "./genpdf";
 import cx from "classnames";
@@ -8,6 +7,8 @@ import produce, { enableMapSet } from "immer";
 // @ts-ignore
 import * as styles from "./style.module.css";
 enableMapSet();
+
+import TransFlag from "jsx-svg:../assets/transflag.svg";
 
 let _key = 0;
 const key = (): Key => _key++;
@@ -104,6 +105,11 @@ export const App: FC = () => {
             </p>
             <p>
                 <input type="submit" value="Create" />
+            </p>
+            <p>
+                <a href="https://github.com/coolreader18/buttonsheet">
+                    Made with <TransFlag style={{ transform: "translateY(2px)" }} /> by noa
+                </a>
             </p>
         </form>
     );
