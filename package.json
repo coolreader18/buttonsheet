@@ -15,7 +15,7 @@
     "classnames": "^2.3.1",
     "immer": "^9.0.12",
     "iterare": "^1.2.1",
-    "jspdf": "^2.5.1",
+    "jspdf": "github:parallax/jsPDF#v2.5.1",
     "preact": "^10.6.5"
   },
   "devDependencies": {

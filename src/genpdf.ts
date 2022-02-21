@@ -1,4 +1,6 @@
-import { jsPDF } from "jspdf";
+import { jsPDF } from "jspdf/src/jspdf";
+import "jspdf/src/modules/addimage";
+import "jspdf/src/modules/png_support";
 import iterate from "iterare";
 
 const inner_button = 1.25;
