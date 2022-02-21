@@ -1,0 +1,30 @@
+{
+  "name": "@parcel/transformer-svg-react",
+  "version": "2.3.2",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/parcel"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/parcel-bundler/parcel.git"
+  },
+  "main": "lib/SvgReactTransformer.js",
+  "source": "src/SvgReactTransformer.js",
+  "engines": {
+    "node": ">= 12.0.0",
+    "parcel": "^2.3.2"
+  },
+  "dependencies": {
+    "@parcel/plugin": "2.3.2",
+    "@svgr/core": "^6.2.0",
+    "@svgr/plugin-jsx": "^6.2.0",
+    "@svgr/plugin-svgo": "^6.2.0",
+    "camelcase": "^6.3.0"
+  },
+  "gitHead": "47379bf8fabeb2cfe03ade8802d942388b153e5b"
+}
