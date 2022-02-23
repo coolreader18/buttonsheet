@@ -1,5 +1,5 @@
 import { FunctionComponent as FC, h } from "preact";
-import { useState } from "preact/hooks";
+import { useMemo, useState } from "preact/hooks";
 import type { Alt } from "./genpdf";
 import cx from "classnames";
 import iterate from "iterare";
@@ -9,20 +9,14 @@ import * as styles from "./style.module.css";
 enableMapSet();
 
 import TransFlag from "jsx-svg:../assets/transflag.svg";
+import { CANCEL_FILE, makeObjectURL, pickFile, prevDefault } from "./util";
 
 let _key = 0;
 const key = (): Key => _key++;
 type Key = number;
 
-const prevDefault =
-    <E extends { preventDefault(): void }>(f: (ev: E) => void) =>
-    (ev: E) => {
-        ev.preventDefault();
-        f(ev);
-    };
-
 type Layer = Map<Key, Alt>;
-const makeAlt = (): Alt => ({ blob: new Blob(), full: false, pixel: false });
+const makeAlt = (blob = new Blob()): Alt => ({ blob, full: false, pixel: false });
 const newLayer = (): Layer => new Map([[key(), makeAlt()]]);
 
 let _genPdf!: Promise<typeof import("./genpdf").genPdf>;
@@ -78,11 +72,17 @@ export const App: FC = () => {
                             );
                         }}
                         addAlt={() => {
-                            setLayers((layers) =>
-                                produce(layers, (draft) => {
-                                    draft.get(i)!.set(key(), makeAlt());
-                                })
-                            );
+                            pickFile(true).then((files) => {
+                                if (!files) return;
+                                setLayers((layers) =>
+                                    produce(layers, (draft) => {
+                                        const layer = draft.get(i)!;
+                                        for (const file of files) {
+                                            layer.set(key(), makeAlt(file));
+                                        }
+                                    })
+                                );
+                            });
                         }}
                         removeLayer={() => {
                             setLayers((layers) =>
@@ -118,34 +118,27 @@ export const App: FC = () => {
 const ButtonLayer: FC<{
     update: (change: (alt: Alt) => Alt | null) => void;
     alt: Alt;
-}> = ({ update, alt: { full, pixel } }) => {
-    const [bgUrl, setBgUrl] = useState<string | undefined>(undefined);
+}> = ({ update, alt: { full, pixel, blob } }) => {
+    const bgUrl = useMemo(() => (blob.size == 0 ? null : makeObjectURL(blob)), [blob]);
     const backgroundImage = bgUrl && `url(${bgUrl})`;
     return (
         <div className={styles.buttonLayer}>
-            <label className={styles.dContents}>
-                <input
-                    type="file"
-                    className={styles.hidden}
-                    onChange={(e) => {
-                        const file = e.currentTarget.files![0];
-                        if (bgUrl) URL.revokeObjectURL(bgUrl);
-                        setBgUrl(URL.createObjectURL(file));
+            <button
+                onClick={prevDefault(() => {
+                    pickFile().then((files) => {
+                        if (!files) return;
+                        const file = files[0];
                         update((alt) => ({ ...alt, blob: file }));
-                    }}
-                />
-                <button
-                    // forward button to file input
-                    onClick={prevDefault((e) => e.currentTarget.parentElement!.click())}
-                    className={cx(
-                        styles.layerImg,
-                        backgroundImage ? null : styles.uploadIcon,
-                        full && styles.layerImgFull
-                    )}
-                    style={{ backgroundImage }}
-                    aria-label="Upload image"
-                />
-            </label>
+                    });
+                })}
+                className={cx(
+                    styles.layerImg,
+                    backgroundImage ? null : styles.uploadIcon,
+                    full && styles.layerImgFull
+                )}
+                style={{ backgroundImage }}
+                aria-label="Upload image"
+            />
             <div className={cx(styles.layerConfig, styles.h100)}>
                 <button
                     className={cx(styles.h100, styles.textButton)}
@@ -202,7 +195,7 @@ const LayersRow: FC<{
         <button
             tabIndex={0}
             className={cx(styles.addAlt, styles.textButton)}
-            onClick={prevDefault(addAlt)}
+            onClick={prevDefault(() => addAlt())}
             style={{ fontSize: "1.5em" }}
             aria-label="Add alt"
             title="Add alt"
